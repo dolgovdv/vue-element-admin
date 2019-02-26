@@ -6,7 +6,10 @@
       </a>
     </p>
     <el-button icon="el-icon-question" type="primary" @click.prevent.stop="guide">{{ $t('guide.button') }}</el-button>
-    <h1>t</h1>
+    <h1>test</h1>
+    {{ count }}
+    <button @click="increment">+</button>
+    <button @click="decrement">-</button>
   </div>
 </template>
 
@@ -14,12 +17,18 @@
 import Driver from 'driver.js' // import driver.js
 import 'driver.js/dist/driver.min.css' // import driver.js css
 import steps from './defineSteps'
+// import store from '@/store'
 
 export default {
   name: 'Guide',
   data() {
     return {
       driver: null
+    }
+  },
+  computed: {
+    count() {
+      return 1 // store.node.count
     }
   },
   mounted() {
@@ -29,6 +38,12 @@ export default {
     guide() {
       this.driver.defineSteps(steps)
       this.driver.start()
+    },
+    increment() {
+      this.store.commit('increment')
+    },
+    decrement() {
+      this.store.commit('decrement')
     }
   }
 }
