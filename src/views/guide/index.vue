@@ -6,6 +6,7 @@
       </a>
     </p>
     <el-button icon="el-icon-question" type="primary" @click.prevent.stop="guide">{{ $t('guide.button') }}</el-button>
+    <h1>t</h1>
   </div>
 </template>
 
