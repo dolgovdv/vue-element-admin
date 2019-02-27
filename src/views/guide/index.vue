@@ -41,11 +41,12 @@ export default {
     },
     // add test
     increment() {
-      // this.store.commit('increment')
+      // this.$store.commit('increment')
+      this.$store.dispatch('increment')
     },
     // add test
     decrement() {
-      // this.store.commit('decrement')
+      this.$store.dispatch('decrement')
     }
   }
 }
