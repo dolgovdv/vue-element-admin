@@ -17,7 +17,6 @@
 import Driver from 'driver.js' // import driver.js
 import 'driver.js/dist/driver.min.css' // import driver.js css
 import steps from './defineSteps'
-// import store from '@/store'
 
 export default {
   name: 'Guide',
@@ -26,9 +25,10 @@ export default {
       driver: null
     }
   },
+  // add test
   computed: {
     count() {
-      return 1 // store.node.count
+      return this.$store.state.node.count
     }
   },
   mounted() {
@@ -39,11 +39,13 @@ export default {
       this.driver.defineSteps(steps)
       this.driver.start()
     },
+    // add test
     increment() {
-      this.store.commit('increment')
+      // this.store.commit('increment')
     },
+    // add test
     decrement() {
-      this.store.commit('decrement')
+      // this.store.commit('decrement')
     }
   }
 }
