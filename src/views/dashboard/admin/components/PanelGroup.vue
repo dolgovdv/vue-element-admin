@@ -6,8 +6,8 @@
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">New Visits</div>
-          <count-to :start-val="0" :end-val="102401" :duration="2600" class="card-panel-num"/>
+          <div class="card-panel-text">Device</div>
+          <count-to :start-val="0" :end-val="device" :duration="2600" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -17,8 +17,8 @@
           <svg-icon icon-class="message" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">Messages</div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num"/>
+          <div class="card-panel-text">Object</div>
+          <count-to :start-val="0" :end-val="object" :duration="3000" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -50,9 +50,39 @@
 <script>
 import CountTo from 'vue-count-to'
 
+// add database
+import service from '@/utils/request.js'
+
 export default {
   components: {
     CountTo
+  },
+  data: function() {
+    return {
+      object: '0'
+    }
+  },
+  mounted() {
+    service({
+      method: 'post',
+      url: '/select',
+      data: {
+        typeObject: 'object',
+        nameObject: 'inventorydb.f_nodejs_get_obj_info()'
+      }
+    })
+      .then(res => {
+        return res.data[0]
+      })
+      .then(res => {
+        this.device = res[0].dev
+        this.object = res[0].obj
+        console.log('obj = ', res[0].obj, 'dev = ', res[0].dev)
+        // return res[0].obj
+      })
+      .catch(err => {
+        console.log('err = ', err)
+      })
   },
   methods: {
     handleSetLineChartData(type) {

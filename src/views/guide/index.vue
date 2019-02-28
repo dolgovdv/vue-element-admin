@@ -10,6 +10,7 @@
     {{ count }}
     <button @click="increment">+</button>
     <button @click="decrement">-</button>
+    {{ val }}
   </div>
 </template>
 
@@ -18,11 +19,15 @@ import Driver from 'driver.js' // import driver.js
 import 'driver.js/dist/driver.min.css' // import driver.js css
 import steps from './defineSteps'
 
+import service from '@/utils/request.js'
+// import axios from 'axios'
+
 export default {
   name: 'Guide',
   data() {
     return {
-      driver: null
+      driver: null,
+      val: ''
     }
   },
   // add test
@@ -43,6 +48,30 @@ export default {
     increment() {
       // this.$store.commit('increment')
       this.$store.dispatch('increment')
+      // console.log('service = ', service, 'axios = ', axios)
+      // const getOject = {
+      //   typeObject: 'object',
+      //   nameObject: 'navidb.f_nodejs_get_tree("0001", 1)'
+      // }
+      // const getJSONObject = JSON.stringify(getOject)
+      service({
+        method: 'post',
+        url: '/select',
+        data: {
+          typeObject: 'object',
+          nameObject: 'navidb.f_nodejs_get_tree(\'0001\', 1)'
+        }
+      })
+        .then(res => {
+          return res.data[0]
+        })
+        .then(res => {
+          this.val = res[0].nodename
+          console.log('res = ', res[0].nodename)
+        })
+        .catch(err => {
+          console.log('err = ', err)
+        })
     },
     // add test
     decrement() {
