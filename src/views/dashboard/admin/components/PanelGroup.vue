@@ -2,26 +2,69 @@
   <el-row :gutter="40" class="panel-group">
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
+        <h2 class="header-card">Устройства</h2>
         <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="peoples" class-name="card-panel-icon" />
+          <svg-icon icon-class="settings" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">Device</div>
-          <count-to :start-val="0" :end-val="device" :duration="2600" class="card-panel-num"/>
+          <div class="card-panel-text">Установ.</div>
+          <count-to :start-val="0" :end-val="installDevice" :duration="2600" class="card-panel-num"/>
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">На связи</div>
+          <count-to :start-val="0" :end-val="connectDevice" :duration="2600" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('messages')">
-        <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="message" class-name="card-panel-icon" />
+        <h2 class="header-card">Мощность</h2>
+        <div class="card-panel-icon-wrapper icon-people">
+          <svg-icon icon-class="renewable-energy" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">Object</div>
-          <count-to :start-val="0" :end-val="object" :duration="3000" class="card-panel-num"/>
+          <div class="card-panel-text">Потребл.</div>
+          <count-to :start-val="0" :end-val="powerConsumption" :duration="2600" class="card-panel-num"/>
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">Компенс.</div>
+          <count-to :start-val="0" :end-val="powerСompensation" :duration="2600" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="handleSetLineChartData('messages')">
+        <h2 class="header-card">Емкость</h2>
+        <div class="card-panel-icon-wrapper icon-people">
+          <svg-icon icon-class="battery" class-name="card-panel-icon" />
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">Установлен.</div>
+          <count-to :start-val="0" :end-val="capacityInstall" :duration="2600" class="card-panel-num"/>
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">Рабочая</div>
+          <count-to :start-val="0" :end-val="capacityWork" :duration="2600" class="card-panel-num"/>
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="handleSetLineChartData('messages')">
+        <h2 class="header-card">Аварии</h2>
+        <div class="card-panel-icon-wrapper icon-people">
+          <svg-icon icon-class="alarm" class-name="card-panel-icon" />
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">Активные</div>
+          <count-to :start-val="0" :end-val="alarmActive" :duration="2600" class="card-panel-num"/>
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">Всего</div>
+          <count-to :start-val="0" :end-val="alarmAll" :duration="2600" class="card-panel-num"/>
+        </div>
+      </div>
+    </el-col>
+    <!--
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('purchases')">
         <div class="card-panel-icon-wrapper icon-money">
@@ -44,6 +87,7 @@
         </div>
       </div>
     </el-col>
+    -->
   </el-row>
 </template>
 
@@ -59,7 +103,14 @@ export default {
   },
   data: function() {
     return {
-      object: '0'
+      installDevice: 0,
+      connectDevice: 0,
+      powerConsumption: 0,
+      powerСompensation: 0,
+      capacityInstall: 0,
+      capacityWork: 0,
+      alarmActive: 0,
+      alarmAll: 0
     }
   },
   mounted() {
@@ -68,16 +119,34 @@ export default {
       url: '/select',
       data: {
         typeObject: 'object',
-        nameObject: 'inventorydb.f_nodejs_get_obj_info()'
+        // nameObject: 'inventorydb.f_nodejs_get_obj_info()'
+        nameObject: 'public.test'
       }
     })
       .then(res => {
         return res.data[0]
       })
       .then(res => {
-        this.device = res[0].dev
-        this.object = res[0].obj
-        console.log('obj = ', res[0].obj, 'dev = ', res[0].dev)
+        // разбираем массив на один объект
+        const objdata = res.reduce(function(obj, item) {
+          // добавляем в объект obj новый элемент
+          console.log('item = ', item, 'obj = ', obj)
+          obj[item.name] = item.value
+          return obj
+        }, {})
+        console.log('objdata =', objdata)
+        // деструктуризация объекта
+        const { connectDevice = 0, installDevice = 0, powerConsumption = 0, powerСompensation = 0, capacityInstall = 0, capacityWork = 0, alarmActive = 0, alarmAll = 0 } = objdata
+        // передать значения в компонент?!
+        this.connectDevice = connectDevice
+        this.installDevice = installDevice
+        this.powerConsumption = powerConsumption
+        this.powerСompensation = powerСompensation
+        this.capacityInstall = capacityInstall
+        this.capacityWork = capacityWork
+        this.alarmActive = alarmActive
+        this.alarmAll = alarmAll
+        // console.log('obj = ', res[0].obj, 'dev = ', res[0].dev)
         // return res[0].obj
       })
       .catch(err => {
@@ -99,7 +168,8 @@ export default {
     margin-bottom: 32px;
   }
   .card-panel {
-    height: 108px;
+    text-align: center;
+    min-height: 108px;
     cursor: pointer;
     font-size: 12px;
     position: relative;
@@ -139,7 +209,7 @@ export default {
     }
     .card-panel-icon-wrapper {
       float: left;
-      margin: 14px 0 0 14px;
+      margin: 0px 0 0 14px;
       padding: 16px;
       transition: all 0.38s ease-out;
       border-radius: 6px;
@@ -147,11 +217,12 @@ export default {
     .card-panel-icon {
       float: left;
       font-size: 48px;
+      margin-top: 0px;
     }
     .card-panel-description {
       float: right;
       font-weight: bold;
-      margin: 26px;
+      margin: 8px;
       margin-left: 0px;
       .card-panel-text {
         line-height: 18px;
@@ -161,6 +232,11 @@ export default {
       }
       .card-panel-num {
         font-size: 20px;
+      }
+      .header-card {
+        margin-top: 5px;
+        margin-bottom: 0px;
+        text-align: center;
       }
     }
   }
