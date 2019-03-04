@@ -128,15 +128,24 @@ export default {
       })
       .then(res => {
         // разбираем массив на один объект
-        const objdata = res.reduce(function(obj, item) {
+        const objdata = res.reduce((obj, item) => {
           // добавляем в объект obj новый элемент
-          console.log('item = ', item, 'obj = ', obj)
+          // console.log('item = ', item, 'obj = ', obj)
           obj[item.name] = item.value
           return obj
         }, {})
-        console.log('objdata =', objdata)
+        // console.log('objdata =', objdata)
         // деструктуризация объекта
-        const { connectDevice = 0, installDevice = 0, powerConsumption = 0, powerСompensation = 0, capacityInstall = 0, capacityWork = 0, alarmActive = 0, alarmAll = 0 } = objdata
+        const {
+          connectDevice = 0,
+          installDevice = 0,
+          powerConsumption = 0,
+          powerСompensation = 0,
+          capacityInstall = 0,
+          capacityWork = 0,
+          alarmActive = 0,
+          alarmAll = 0
+        } = objdata
         // передать значения в компонент?!
         this.connectDevice = connectDevice
         this.installDevice = installDevice
