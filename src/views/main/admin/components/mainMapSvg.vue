@@ -33,7 +33,7 @@ export default {
         const item = path[i]
         const id = item.getAttribute('id')
         // const title = item.getAttribute('title')
-        item.setAttribute('fill', '#f1f1f1')
+        item.setAttribute('fill', '#e0e0e0')
         item.addEventListener('click', () => { clickSvgObject(id, idObject) })
       }
     }
