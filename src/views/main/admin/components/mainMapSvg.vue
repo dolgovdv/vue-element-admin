@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Map</h1>
+    <h1>Ценовые и неценовые зоны оптового рынка</h1>
     <!-- <object :id="idObject" data="./src/icons/svg/russia_with_regions.svg" type="image/svg+xml"/> -->
 
     <svg
