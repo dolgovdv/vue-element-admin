@@ -119,8 +119,8 @@ export default {
       url: '/select',
       data: {
         typeObject: 'object',
-        // nameObject: 'inventorydb.f_nodejs_get_obj_info()'
-        nameObject: 'public.test'
+        nameObject: 'inventorydb.f_nodejs_get_obj_info()'
+        // nameObject: 'public.test'
       }
     })
       .then(res => {
@@ -130,15 +130,15 @@ export default {
         // разбираем массив на один объект
         const objdata = res.reduce((obj, item) => {
           // добавляем в объект obj новый элемент
-          // console.log('item = ', item, 'obj = ', obj)
-          obj[item.name] = item.value
+          obj[item.title] = item.tvalue
+          console.log('item = ', item, 'obj = ', obj)
           return obj
         }, {})
         // console.log('objdata =', objdata)
         // деструктуризация объекта
         const {
-          connectDevice = 0,
-          installDevice = 0,
+          count_object_online = 0,
+          count_object_install = 0,
           powerConsumption = 0,
           powerСompensation = 0,
           capacityInstall = 0,
@@ -147,15 +147,15 @@ export default {
           alarmAll = 0
         } = objdata
         // передать значения в компонент?!
-        this.connectDevice = connectDevice
-        this.installDevice = installDevice
+        this.connectDevice = count_object_online
+        this.installDevice = count_object_install
         this.powerConsumption = powerConsumption
         this.powerСompensation = powerСompensation
         this.capacityInstall = capacityInstall
         this.capacityWork = capacityWork
         this.alarmActive = alarmActive
         this.alarmAll = alarmAll
-        // console.log('obj = ', res[0].obj, 'dev = ', res[0].dev)
+        // console.log('this.connectDevice = ', count_object_online)
         // return res[0].obj
       })
       .catch(err => {
