@@ -375,18 +375,18 @@ export default {
   mounted: function mounted() {
     // получаем объект из svg
     this.svgObject = this.getObjectElement(this.idObject)
-    console.log('this.svgObject =', this.svgObject)
+    // console.log('this.svgObject =', this.svgObject)
     this.iterationElementObject(this.svgObject, this.idObject)
   },
   methods: {
     getObjectElement: function(object) {
       // подключаем объект
       const mapSvgObject = document.getElementById(object)
-      console.log('mapSvgObject =', mapSvgObject)
+      // console.log('mapSvgObject =', mapSvgObject)
       // получаем содержимое объекта
       // содержимое объекта не передается!!!
-      const objectDocument = mapSvgObject.contentDocument
-      console.log('objectDocument =', objectDocument)
+      // const objectDocument = mapSvgObject.contentDocument
+      // console.log('objectDocument =', objectDocument)
       return mapSvgObject
     },
     clickSvgObject: function(id, idObject) {

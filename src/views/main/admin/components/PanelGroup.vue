@@ -131,7 +131,7 @@ export default {
         const objdata = res.reduce((obj, item) => {
           // добавляем в объект obj новый элемент
           obj[item.title] = item.tvalue
-          console.log('item = ', item, 'obj = ', obj)
+          // console.log('item = ', item, 'obj = ', obj)
           return obj
         }, {})
         // console.log('objdata =', objdata)
@@ -147,14 +147,14 @@ export default {
           alarmAll = 0
         } = objdata
         // передать значения в компонент?!
-        this.connectDevice = count_object_online
-        this.installDevice = count_object_install
-        this.powerConsumption = powerConsumption
-        this.powerСompensation = powerСompensation
-        this.capacityInstall = capacityInstall
-        this.capacityWork = capacityWork
-        this.alarmActive = alarmActive
-        this.alarmAll = alarmAll
+        this.connectDevice = +count_object_online
+        this.installDevice = +count_object_install
+        this.powerConsumption = +powerConsumption
+        this.powerСompensation = +powerСompensation
+        this.capacityInstall = +capacityInstall
+        this.capacityWork = +capacityWork
+        this.alarmActive = +alarmActive
+        this.alarmAll = +alarmAll
         // console.log('this.connectDevice = ', count_object_online)
         // return res[0].obj
       })
