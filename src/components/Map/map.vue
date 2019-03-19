@@ -6,12 +6,15 @@
     <l-map
       :zoom="zoom"
       :center="center"
-      class="map"
+      style="height: 600px; width: 800px"
       @update:zoom="zoomUpdated"
       @update:center="centerUpdated"
       @update:bounds="boundsUpdated"
     >
       <l-tile-layer :url="url"/>
+      <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.coordinates">
+        <l-popup :content="item.title" />
+      </l-marker>
     </l-map>
   </div>
 </template>
@@ -20,7 +23,7 @@
 // vue2leaflet
 import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { LMap, LTileLayer } from 'vue2-leaflet'
+import { LMap, LTileLayer, LMarker, LPopup } from 'vue2-leaflet'
 
 delete Icon.Default.prototype._getIconUrl
 Icon.Default.mergeOptions({
@@ -33,16 +36,24 @@ export default {
   name: 'LeafletMap',
   components: {
     'l-map': LMap,
-    'l-tile-layer': LTileLayer
+    'l-tile-layer': LTileLayer,
+    'l-marker': LMarker,
+    'l-popup': LPopup
   },
   props: {
+    // markerLatLng: {
+    //   type: Array,
+    //   default: () => ([55.742121, 37.593232])
+    // },
+    // title: {
+    //   type: String,
+    //   default: 'test'
+    // },
     markers: {
       type: Array,
-      default: () => ([{
-        id: 1,
-        latLng: [55.742121, 37.593232],
-        content: '1'
-      }])
+      default: () => {
+        return []
+      }
     }
   },
   data() {
@@ -66,11 +77,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.map{
-  height: 600px;
-  width: 800px;
-}
-</style>
-

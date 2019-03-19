@@ -1,6 +1,9 @@
 <template>
   <div>
-    <user-map/>
+    <user-map v-if="markers" :markers="markers"/>
+    <div v-else>
+      <h1>Данные загружаются</h1>
+    </div>
   </div>
 </template>
 
@@ -34,7 +37,7 @@ export default {
         }
       })
         .then(res => {
-          console.log('res', res.data[0])
+          // console.log('res', res.data[0])
           this.convertInputArray(res.data[0])
           return res.data[0]
         })
@@ -43,30 +46,33 @@ export default {
         })
     },
     convertInputArray: function(arrInput) {
-      arrInput.forEach(object => {
-        const latLngArr = []
-        for (const key in object) {
+      arrInput.forEach(object => { // перебор объектов по массиву
+        const latLngArr = [] // массив для объединения свойств
+        for (const key in object) { // перебор свойств объекта
           if (object.hasOwnProperty(key)) {
             const element = object[key]
+            // переопределение свойств
             if (key === 'latit') {
-              latLngArr.push(parseFloat(element))
+              latLngArr.push(element)
               delete object[key]
             }
             if (key === 'longit') {
-              latLngArr.push(parseFloat(element))
+              latLngArr.push(element)
               delete object[key]
             }
+            // создание из двух свойств в один массив
+            object.coordinates = latLngArr
+
             if (key === 'objname_rus') {
-              object.content = element
+              object.title = element
               delete object[key]
             }
-            object.latLng = latLngArr
-            console.log('latLngArr', latLngArr)
+            // console.log('latLngArr', latLngArr)
           }
         }
       })
-      console.log('arrInput', arrInput)
-      // this.markers = arrInput
+      // console.log('arrInput', arrInput)
+      this.markers = arrInput
       return arrInput
     }
   }
