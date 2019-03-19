@@ -1,63 +1,73 @@
 <template>
-  <div style="height: 100%; width: 100%">
-    <div class="info" style="height: 15%">
-      <span>Zoom: {{ zoom }}</span>
-    </div>
-    <l-map
-      :zoom="zoom"
-      :center="center"
-      style="height: 600px; width: 800px"
-      @update:zoom="zoomUpdated"
-      @update:center="centerUpdated"
-      @update:bounds="boundsUpdated"
-    >
-      <l-tile-layer :url="url"/>
-      <l-marker :lat-lng="markerLatLng"/>
-    </l-map>
+  <div>
+    <user-map/>
   </div>
 </template>
 
 <script>
-// vue2leaflet
-import { Icon } from 'leaflet'
-import 'leaflet/dist/leaflet.css'
-import { LMap, LTileLayer, LMarker } from 'vue2-leaflet'
-delete Icon.Default.prototype._getIconUrl
-Icon.Default.mergeOptions({
-  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-  iconUrl: require('leaflet/dist/images/marker-icon.png'),
-  shadowUrl: require('leaflet/dist/images/marker-shadow.png')
-})
-
-const lMap = LMap
-const lTileLayer = LTileLayer
-const lMarker = LMarker
+import UserMap from '@/components/Map/map.vue'
+import service from '@/utils/request.js'
 
 export default {
-  name: 'LeafletMap',
+  name: 'UserMap',
   components: {
-    'l-map': lMap,
-    'l-tile-layer': lTileLayer,
-    'l-marker': lMarker
+    'user-map': UserMap
   },
-  data() {
+  data: function() {
     return {
-      url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      zoom: 11,
-      center: [55.75, 37.61],
-      bounds: null,
-      markerLatLng: [55.752121, 37.613232]
+      markers: null
     }
   },
+  mounted: function() {
+    this.getObjectData()
+  },
   methods: {
-    zoomUpdated(zoom) {
-      this.zoom = zoom
+    getObjectData: function(query) {
+      query = query || 'inventorydb.f_get_object_nodejs()'
+      service({
+        method: 'post',
+        url: '/select',
+        data: {
+          typeObject: 'object',
+          nameObject: query
+          // nameObject: 'public.test'
+        }
+      })
+        .then(res => {
+          console.log('res', res.data[0])
+          this.convertInputArray(res.data[0])
+          return res.data[0]
+        })
+        .catch(err => {
+          console.log('err = ', err)
+        })
     },
-    centerUpdated(center) {
-      this.center = center
-    },
-    boundsUpdated(bounds) {
-      this.bounds = bounds
+    convertInputArray: function(arrInput) {
+      arrInput.forEach(object => {
+        const latLngArr = []
+        for (const key in object) {
+          if (object.hasOwnProperty(key)) {
+            const element = object[key]
+            if (key === 'latit') {
+              latLngArr.push(parseFloat(element))
+              delete object[key]
+            }
+            if (key === 'longit') {
+              latLngArr.push(parseFloat(element))
+              delete object[key]
+            }
+            if (key === 'objname_rus') {
+              object.content = element
+              delete object[key]
+            }
+            object.latLng = latLngArr
+            console.log('latLngArr', latLngArr)
+          }
+        }
+      })
+      console.log('arrInput', arrInput)
+      // this.markers = arrInput
+      return arrInput
     }
   }
 }
