@@ -47,33 +47,29 @@ export default {
     },
     convertInputArray: function(arrInput) {
       arrInput.forEach(object => { // перебор объектов по массиву
-        const latLngArr = [] // массив для объединения свойств
-        for (const key in object) { // перебор свойств объекта
-          if (object.hasOwnProperty(key)) {
-            const element = object[key]
-            // переопределение свойств
-            if (key === 'latit') {
-              latLngArr.push(element)
-              delete object[key]
-            }
-            if (key === 'longit') {
-              latLngArr.push(element)
-              delete object[key]
-            }
-            // создание из двух свойств в один массив
-            object.coordinates = latLngArr
-
-            if (key === 'objname_rus') {
-              object.title = element
-              delete object[key]
-            }
-            // console.log('latLngArr', latLngArr)
-          }
-        }
+        this.combinePropsToNewProp(object, ['latit', 'longit'], 'coordinates')
+        this.renameProp(object, 'objname_rus', 'title')
       })
-      // console.log('arrInput', arrInput)
       this.markers = arrInput
       return arrInput
+    },
+    combinePropsToNewProp: function(obj, propArr, newProp) {
+      obj[newProp] = []
+      for (const prop of propArr) {
+        this.pushAndDelete(obj, prop, newProp)
+      }
+    },
+    pushAndDelete: function(obj, oldProp, newProp) {
+      if (obj.hasOwnProperty(oldProp)) {
+        obj[newProp].push(obj[oldProp])
+        delete obj[oldProp]
+      }
+    },
+    renameProp: function(obj, oldProp, newProp) {
+      if (obj.hasOwnProperty(oldProp)) {
+        obj[newProp] = obj[oldProp]
+        delete obj[oldProp]
+      }
     }
   }
 }
