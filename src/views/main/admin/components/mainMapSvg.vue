@@ -360,6 +360,53 @@
       </svg>
     </div>
 
+    <table cellpadding="1px" align="left">
+      <tbody>
+        <tr>
+          <td>
+            <svg width="60px" height="20px">
+              <rect width="60px" height="20px" fill="#ffcc80"/>
+            </svg>
+          </td>
+          <td class="td-legend" align="left">
+            <p>
+              - Территории относящиеся к первой ценовой зоне
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <svg width="60px" height="20px">
+              <rect width="60px" height="20px" fill="#ffff99"/>
+            </svg>
+          </td>
+          <td class="td-legend" align="left">
+            <p>- Территории относящиеся ко второй ценовой зоне</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <svg class="first-zone" width="60px" height="20px">
+              <rect width="60px" height="20px" fill="#6699ff"/>
+            </svg>
+          </td>
+          <td class="td-legend" align="left">
+            <p>- Территории относящиеся к неценовым зонам</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <svg class="first-zone" width="60px" height="20px">
+              <rect width="60px" height="20px" fill="#996600"/>
+            </svg>
+          </td>
+          <td class="td-legend" align="left">
+            <p>- Территории относящиеся к зонам особового функционирования</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
   </div>
 </template>
 
@@ -489,3 +536,9 @@ function iterationElementObject(object, idObject) {
 }
 */
 </script>
+
+<style>
+td-legend {
+  width: 200px;
+}
+</style>
