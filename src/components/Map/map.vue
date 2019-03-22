@@ -12,9 +12,11 @@
       @update:bounds="boundsUpdated"
     >
       <l-tile-layer :url="url"/>
-      <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.coordinates">
-        <l-popup :content="item.title" />
-      </l-marker>
+      <v-marker-cluster>
+        <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.coordinates">
+          <l-popup :content="item.title" />
+        </l-marker>
+      </v-marker-cluster>
     </l-map>
   </div>
 </template>
@@ -24,6 +26,8 @@
 import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { LMap, LTileLayer, LMarker, LPopup } from 'vue2-leaflet'
+
+import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
 
 delete Icon.Default.prototype._getIconUrl
 Icon.Default.mergeOptions({
@@ -38,7 +42,8 @@ export default {
     'l-map': LMap,
     'l-tile-layer': LTileLayer,
     'l-marker': LMarker,
-    'l-popup': LPopup
+    'l-popup': LPopup,
+    'v-marker-cluster': Vue2LeafletMarkerCluster
   },
   props: {
     // markerLatLng: {
@@ -77,3 +82,9 @@ export default {
   }
 }
 </script>
+
+<style>
+@import "leaflet.markercluster/dist/MarkerCluster.css";
+@import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+</style>
+

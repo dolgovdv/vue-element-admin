@@ -64,6 +64,7 @@
     "vue-splitpane": "1.0.2",
     "vue-tree-halower": "^1.8.0",
     "vue2-leaflet": "^2.0.2",
+    "vue2-leaflet-markercluster": "^3.0.0",
     "vuedraggable": "^2.16.0",
     "vuex": "3.0.1",
     "xlsx": "^0.11.16"
