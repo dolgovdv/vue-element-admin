@@ -3,8 +3,13 @@
     <h1>Tree</h1>
     <button type="button" @click="getFilterGeo()">Сортировка по расположению</button>
     <button type="button" @click="getFilterZone()">Сортировка по зонам</button>
-    <div class="viewTree">
+    <div v-if="treeData" class="viewTree">
       <object-tree :tree-data="treeData" />
+    </div>
+    <div v-else>
+      <h1>
+        Данные загружаются.
+      </h1>
     </div>
   </div>
 </template>
@@ -14,30 +19,6 @@
 import service from '@/utils/request.js'
 import ObjectTree from '@/components/Tree'
 
-// demo data
-const treeData = {
-  name: 'My Tree',
-  children: [
-    { name: 'hello' },
-    { name: 'wat' },
-    {
-      name: 'child folder',
-      children: [
-        {
-          name: 'child folder',
-          children: [{ name: 'hello' }, { name: 'wat' }]
-        },
-        { name: 'hello' },
-        { name: 'wat' },
-        {
-          name: 'child folder',
-          children: [{ name: 'hello' }, { name: 'wat' }]
-        }
-      ]
-    }
-  ]
-}
-
 export default {
   name: 'Tree',
   components: {
@@ -45,8 +26,11 @@ export default {
   },
   data: function() {
     return {
-      treeData: treeData
+      treeData: null
     }
+  },
+  mounted: function() {
+    this.connectToDataBase()
   },
   methods: {
     getFilterGeo() {
