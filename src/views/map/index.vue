@@ -4,6 +4,8 @@
     <div v-else>
       <h1>Данные загружаются</h1>
     </div>
+    <hr>
+    <div/>
   </div>
 </template>
 
@@ -11,10 +13,13 @@
 import UserMap from '@/components/Map/map.vue'
 import service from '@/utils/request.js'
 
+import io from '@/components/Socket/socket.vue'
+
 export default {
   name: 'UserMap',
   components: {
-    'user-map': UserMap
+    'user-map': UserMap,
+    'io': io
   },
   data: function() {
     return {

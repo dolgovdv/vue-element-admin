@@ -486,7 +486,7 @@ export default {
         }
       })
         .then(res => {
-          console.log('res', res.data[0])
+          // console.log('res', res.data[0])
 
           this.zonePrice = res.data[0]
 

@@ -26,7 +26,6 @@
 import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { LMap, LTileLayer, LMarker, LPopup } from 'vue2-leaflet'
-
 import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
 
 delete Icon.Default.prototype._getIconUrl
@@ -46,14 +45,6 @@ export default {
     'v-marker-cluster': Vue2LeafletMarkerCluster
   },
   props: {
-    // markerLatLng: {
-    //   type: Array,
-    //   default: () => ([55.742121, 37.593232])
-    // },
-    // title: {
-    //   type: String,
-    //   default: 'test'
-    // },
     markers: {
       type: Array,
       default: () => {
@@ -67,6 +58,14 @@ export default {
       zoom: 11,
       center: [55.75, 37.61],
       bounds: null
+    }
+  },
+  sockets: {
+    connect: function() {
+      console.log('socket connected')
+    },
+    customEmit: function(data) {
+      console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
     }
   },
   methods: {

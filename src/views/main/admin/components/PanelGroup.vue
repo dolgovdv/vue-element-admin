@@ -1,94 +1,101 @@
 <template>
-  <el-row :gutter="40" class="panel-group">
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
-        <h2 class="header-card">Объекты</h2>
-        <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="settings" class-name="card-panel-icon" />
+  <div>
+    <h2>Время опроса данных</h2>
+    <input v-model="timeDelayBefore" type="text">
+    <input type="button" value="Установить" @click="changeTimeOut">
+    <h2>Установленное время опроса данных {{ timeDelayUI / 1000 }} секунд.</h2>
+    <el-row :gutter="40" class="panel-group">
+      <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+        <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
+          <h2 class="header-card">Объекты</h2>
+          <div class="card-panel-icon-wrapper icon-people">
+            <svg-icon icon-class="settings" class-name="card-panel-icon" />
+          </div>
+          <div class="card-panel-description">
+            <div class="card-panel-text">Установ.</div>
+            <count-to :start-val="0" :end-val="installDevice" :duration="2600" class="card-panel-num"/>
+          </div>
+          <div class="card-panel-description">
+            <div class="card-panel-text">На связи</div>
+            <count-to :start-val="0" :end-val="connectDevice" :duration="2600" class="card-panel-num"/>
+          </div>
         </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">Установ.</div>
-          <count-to :start-val="0" :end-val="installDevice" :duration="2600" class="card-panel-num"/>
+      </el-col>
+      <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+        <div class="card-panel" @click="handleSetLineChartData('messages')">
+          <h2 class="header-card">Мощность</h2>
+          <div class="card-panel-icon-wrapper icon-people">
+            <svg-icon icon-class="renewable-energy" class-name="card-panel-icon" />
+          </div>
+          <div class="card-panel-description">
+            <div class="card-panel-text">Потребл.</div>
+            <count-to :start-val="0" :end-val="powerConsumption" :duration="2600" class="card-panel-num"/>
+          </div>
+          <div class="card-panel-description">
+            <div class="card-panel-text">Компенс.</div>
+            <count-to :start-val="0" :end-val="powerСompensation" :duration="2600" class="card-panel-num"/>
+          </div>
         </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">На связи</div>
-          <count-to :start-val="0" :end-val="connectDevice" :duration="2600" class="card-panel-num"/>
+      </el-col>
+      <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+        <div class="card-panel" @click="handleSetLineChartData('messages')">
+          <h2 class="header-card">Емкость</h2>
+          <div class="card-panel-icon-wrapper icon-people">
+            <svg-icon icon-class="battery" class-name="card-panel-icon" />
+          </div>
+          <div class="card-panel-description">
+            <div class="card-panel-text">Установлен.</div>
+            <count-to :start-val="0" :end-val="capacityInstall" :duration="2600" class="card-panel-num"/>
+          </div>
+          <div class="card-panel-description">
+            <div class="card-panel-text">Рабочая</div>
+            <count-to :start-val="0" :end-val="capacityWork" :duration="2600" class="card-panel-num"/>
+          </div>
         </div>
-      </div>
-    </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('messages')">
-        <h2 class="header-card">Мощность</h2>
-        <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="renewable-energy" class-name="card-panel-icon" />
+      </el-col>
+      <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+        <div class="card-panel" @click="handleSetLineChartData('messages')">
+          <h2 class="header-card">Аварии</h2>
+          <div class="card-panel-icon-wrapper icon-people">
+            <svg-icon icon-class="alarm" class-name="card-panel-icon" />
+          </div>
+          <div class="card-panel-description">
+            <div class="card-panel-text">Активные</div>
+            <count-to :start-val="0" :end-val="alarmActive" :duration="2600" class="card-panel-num"/>
+          </div>
+          <div class="card-panel-description">
+            <div class="card-panel-text">Всего</div>
+            <count-to :start-val="0" :end-val="alarmAll" :duration="2600" class="card-panel-num"/>
+          </div>
         </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">Потребл.</div>
-          <count-to :start-val="0" :end-val="powerConsumption" :duration="2600" class="card-panel-num"/>
+      </el-col>
+      <!--
+      <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+        <div class="card-panel" @click="handleSetLineChartData('purchases')">
+          <div class="card-panel-icon-wrapper icon-money">
+            <svg-icon icon-class="money" class-name="card-panel-icon" />
+          </div>
+          <div class="card-panel-description">
+            <div class="card-panel-text">Purchases</div>
+            <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num"/>
+          </div>
         </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">Компенс.</div>
-          <count-to :start-val="0" :end-val="powerСompensation" :duration="2600" class="card-panel-num"/>
+      </el-col>
+      <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+        <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+          <div class="card-panel-icon-wrapper icon-shopping">
+            <svg-icon icon-class="shopping" class-name="card-panel-icon" />
+          </div>
+          <div class="card-panel-description">
+            <div class="card-panel-text">Shoppings</div>
+            <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num"/>
+          </div>
         </div>
-      </div>
-    </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('messages')">
-        <h2 class="header-card">Емкость</h2>
-        <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="battery" class-name="card-panel-icon" />
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">Установлен.</div>
-          <count-to :start-val="0" :end-val="capacityInstall" :duration="2600" class="card-panel-num"/>
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">Рабочая</div>
-          <count-to :start-val="0" :end-val="capacityWork" :duration="2600" class="card-panel-num"/>
-        </div>
-      </div>
-    </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('messages')">
-        <h2 class="header-card">Аварии</h2>
-        <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="alarm" class-name="card-panel-icon" />
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">Активные</div>
-          <count-to :start-val="0" :end-val="alarmActive" :duration="2600" class="card-panel-num"/>
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">Всего</div>
-          <count-to :start-val="0" :end-val="alarmAll" :duration="2600" class="card-panel-num"/>
-        </div>
-      </div>
-    </el-col>
-    <!--
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('purchases')">
-        <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon icon-class="money" class-name="card-panel-icon" />
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">Purchases</div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num"/>
-        </div>
-      </div>
-    </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
-        <div class="card-panel-icon-wrapper icon-shopping">
-          <svg-icon icon-class="shopping" class-name="card-panel-icon" />
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">Shoppings</div>
-          <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num"/>
-        </div>
-      </div>
-    </el-col>
-    -->
-  </el-row>
+      </el-col>
+      -->
+    </el-row>
+  </div>
+
 </template>
 
 <script>
@@ -110,61 +117,88 @@ export default {
       capacityInstall: 0,
       capacityWork: 0,
       alarmActive: 0,
-      alarmAll: 0
+      alarmAll: 0,
+      timeDelayBefore: 0,
+      timeDelay: 10
     }
   },
-  mounted() {
-    service({
-      method: 'post',
-      url: '/select',
-      data: {
-        typeObject: 'object',
-        nameObject: 'inventorydb.f_nodejs_get_obj_info()'
-        // nameObject: 'public.test'
-      }
-    })
-      .then(res => {
-        return res.data[0]
-      })
-      .then(res => {
-        // разбираем массив на один объект
-        const objdata = res.reduce((obj, item) => {
-          // добавляем в объект obj новый элемент
-          obj[item.title] = item.tvalue
-          // console.log('item = ', item, 'obj = ', obj)
-          return obj
-        }, {})
-        // console.log('objdata =', objdata)
-        // деструктуризация объекта
-        const {
-          count_object_online = 0,
-          count_object_install = 0,
-          powerConsumption = 0,
-          powerСompensation = 0,
-          capacityInstall = 0,
-          capacityWork = 0,
-          alarmActive = 0,
-          alarmAll = 0
-        } = objdata
-        // передать значения в компонент?!
-        this.connectDevice = +count_object_online
-        this.installDevice = +count_object_install
-        this.powerConsumption = +powerConsumption
-        this.powerСompensation = +powerСompensation
-        this.capacityInstall = +capacityInstall
-        this.capacityWork = +capacityWork
-        this.alarmActive = +alarmActive
-        this.alarmAll = +alarmAll
-        // console.log('this.connectDevice = ', count_object_online)
-        // return res[0].obj
-      })
-      .catch(err => {
-        console.log('err = ', err)
-      })
+  computed: {
+    timeDelayUI: function() {
+      return this.timeDelay * 1000
+    }
+  },
+  mounted: function() {
+    this.requestDBTimeout()
+    this.requestToDB()
   },
   methods: {
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
+    },
+    changeTimeOut: function() {
+      this.timeDelay = this.timeDelayBefore
+      this.requestDBTimeout(1000, this.timeDelayUI)
+    },
+    requestDBTimeout: function(diff, timeDelayUI) {
+      timeDelayUI = timeDelayUI || 10000
+      const eventTime = Date.now()
+      this.requestToDB()
+
+      setTimeout(() => {
+        const nw = Date.now()
+        const diff = nw - eventTime - timeDelayUI
+        this.requestDBTimeout(diff, this.timeDelayUI)
+        // console.log('requestDBTimeout', diff, timeDelayUI, diff)
+      }, timeDelayUI - diff)
+    },
+    requestToDB: function() {
+      service({
+        method: 'post',
+        url: '/select',
+        data: {
+          typeObject: 'object',
+          nameObject: 'inventorydb.f_nodejs_get_obj_info()'
+          // nameObject: 'public.test'
+        }
+      })
+        .then(res => {
+          return res.data[0]
+        })
+        .then(res => {
+          // разбираем массив на один объект
+          const objdata = res.reduce((obj, item) => {
+            // добавляем в объект obj новый элемент
+            obj[item.title] = item.tvalue
+            // console.log('item = ', item, 'obj = ', obj)
+            return obj
+          }, {})
+          // console.log('objdata =', objdata)
+          // деструктуризация объекта
+          const {
+            count_object_online = 0,
+            count_object_install = 0,
+            powerConsumption = 0,
+            powerСompensation = 0,
+            capacityInstall = 0,
+            capacityWork = 0,
+            alarmActive = 0,
+            alarmAll = 0
+          } = objdata
+          // передать значения в компонент?!
+          this.connectDevice = +count_object_online
+          this.installDevice = +count_object_install
+          this.powerConsumption = +powerConsumption
+          this.powerСompensation = +powerСompensation
+          this.capacityInstall = +capacityInstall
+          this.capacityWork = +capacityWork
+          this.alarmActive = +alarmActive
+          this.alarmAll = +alarmAll
+          // console.log('this.connectDevice = ', count_object_online)
+          // return res[0].obj
+        })
+        .catch(err => {
+          console.log('err = ', err)
+        })
     }
   }
 }
