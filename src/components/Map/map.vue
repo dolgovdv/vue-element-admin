@@ -13,7 +13,7 @@
     >
       <l-tile-layer :url="url"/>
       <v-marker-cluster>
-        <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.coordinates">
+        <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.coordinates" :icon="changeIcons(item.agent)">
           <l-popup :content="item.title" />
         </l-marker>
       </v-marker-cluster>
@@ -25,7 +25,7 @@
 // vue2leaflet
 import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { LMap, LTileLayer, LMarker, LPopup } from 'vue2-leaflet'
+import { LMap, LTileLayer, LMarker, LPopup, LIcon } from 'vue2-leaflet'
 import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
 
 delete Icon.Default.prototype._getIconUrl
@@ -42,7 +42,8 @@ export default {
     'l-tile-layer': LTileLayer,
     'l-marker': LMarker,
     'l-popup': LPopup,
-    'v-marker-cluster': Vue2LeafletMarkerCluster
+    'v-marker-cluster': Vue2LeafletMarkerCluster,
+    'l-icon': LIcon
   },
   props: {
     markers: {
@@ -57,7 +58,13 @@ export default {
       url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       zoom: 11,
       center: [55.75, 37.61],
-      bounds: null
+      bounds: null,
+      // eslint-disable-next-line
+      icon: L.icon({
+        iconUrl: '/src/icons/svg/battery.svg',
+        iconSize: [32, 37],
+        iconAnchor: [16, 37]
+      })
     }
   },
   sockets: {
@@ -77,6 +84,10 @@ export default {
     },
     boundsUpdated(bounds) {
       this.bounds = bounds
+    },
+    changeIcons(agent) {
+      // console.log('agent', agent)
+      return agent === null ? agent : this.icon
     }
   }
 }

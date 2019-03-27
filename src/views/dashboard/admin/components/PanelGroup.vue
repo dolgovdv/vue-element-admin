@@ -114,57 +114,72 @@ export default {
     }
   },
   mounted() {
-    service({
-      method: 'post',
-      url: '/select',
-      data: {
-        typeObject: 'object',
-        // nameObject: 'inventorydb.f_nodejs_get_obj_info()'
-        nameObject: 'public.test'
-      }
-    })
-      .then(res => {
-        return res.data[0]
-      })
-      .then(res => {
-        // разбираем массив на один объект
-        const objdata = res.reduce((obj, item) => {
-          // добавляем в объект obj новый элемент
-          // console.log('item = ', item, 'obj = ', obj)
-          obj[item.name] = item.value
-          return obj
-        }, {})
-        // console.log('objdata =', objdata)
-        // деструктуризация объекта
-        const {
-          connectDevice = 0,
-          installDevice = 0,
-          powerConsumption = 0,
-          powerСompensation = 0,
-          capacityInstall = 0,
-          capacityWork = 0,
-          alarmActive = 0,
-          alarmAll = 0
-        } = objdata
-        // передать значения в компонент?!
-        this.connectDevice = connectDevice
-        this.installDevice = installDevice
-        this.powerConsumption = powerConsumption
-        this.powerСompensation = powerСompensation
-        this.capacityInstall = capacityInstall
-        this.capacityWork = capacityWork
-        this.alarmActive = alarmActive
-        this.alarmAll = alarmAll
-        // console.log('obj = ', res[0].obj, 'dev = ', res[0].dev)
-        // return res[0].obj
-      })
-      .catch(err => {
-        console.log('err = ', err)
-      })
+    this.requestDBTimeout()
+    this.requestToDb()
   },
   methods: {
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
+    },
+    requestToDb: function() {
+      service({
+        method: 'post',
+        url: '/select',
+        data: {
+          typeObject: 'object',
+          nameObject: 'inventorydb.f_nodejs_get_obj_info()'
+        // nameObject: 'public.test'
+        }
+      })
+        .then(res => {
+          return res.data[0]
+        })
+        .then(res => {
+        // разбираем массив на один объект
+          const objdata = res.reduce((obj, item) => {
+          // добавляем в объект obj новый элемент
+          // console.log('item = ', item, 'obj = ', obj)
+            obj[item.name] = item.value
+            return obj
+          }, {})
+          // console.log('objdata =', objdata)
+          // деструктуризация объекта
+          const {
+            connectDevice = 0,
+            installDevice = 0,
+            powerConsumption = 0,
+            powerСompensation = 0,
+            capacityInstall = 0,
+            capacityWork = 0,
+            alarmActive = 0,
+            alarmAll = -1
+          } = objdata
+          // передать значения в компонент?!
+          this.connectDevice = connectDevice
+          this.installDevice = installDevice
+          this.powerConsumption = powerConsumption
+          this.powerСompensation = powerСompensation
+          this.capacityInstall = capacityInstall
+          this.capacityWork = capacityWork
+          this.alarmActive = alarmActive
+          this.alarmAll = alarmAll
+        // console.log('obj = ', res[0].obj, 'dev = ', res[0].dev)
+        // return res[0].obj
+        })
+        .catch(err => {
+          console.log('err = ', err)
+        })
+    },
+    requestDBTimeout: function(TimeOut, diff) {
+      TimeOut = TimeOut || 1000
+      const eventTime = Date.now()
+
+      setTimeout(function() {
+        const nw = Date.now()
+        const diff = nw - eventTime - TimeOut
+        console.log(diff)
+        this.requestDBTimeout(TimeOut - diff)
+      }, TimeOut)
     }
   }
 }
