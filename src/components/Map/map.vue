@@ -61,8 +61,8 @@ export default {
       bounds: null,
       // eslint-disable-next-line
       icon: L.icon({
-        iconUrl: '/src/icons/svg/battery.svg',
-        iconSize: [32, 37],
+        iconUrl: '/src/icons/svg/carbattery.svg',
+        iconSize: [50, 65],
         iconAnchor: [16, 37]
       })
     }
