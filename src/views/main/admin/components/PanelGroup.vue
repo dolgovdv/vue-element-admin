@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>Время опроса данных</h2>
-    <input v-model="timeDelayBefore" type="text">
+    <input :value="timeDelayInput" type="text" @input="timeDelayInput = $event.target.value">
     <input type="button" value="Установить" @click="changeTimeOut">
     <h2>Установленное время опроса данных {{ timeDelayUI / 1000 }} секунд.</h2>
     <el-row :gutter="40" class="panel-group">
@@ -118,7 +118,7 @@ export default {
       capacityWork: 0,
       alarmActive: 0,
       alarmAll: 0,
-      timeDelayBefore: 0,
+      timeDelayInput: 0,
       timeDelay: 10
     }
   },
@@ -136,8 +136,8 @@ export default {
       this.$emit('handleSetLineChartData', type)
     },
     changeTimeOut: function() {
-      this.timeDelay = this.timeDelayBefore
-      this.requestDBTimeout(1000, this.timeDelayUI)
+      this.timeDelay = this.timeDelayInput
+      this.requestDBTimeout(10000, this.timeDelayUI)
     },
     requestDBTimeout: function(diff, timeDelayUI) {
       timeDelayUI = timeDelayUI || 10000

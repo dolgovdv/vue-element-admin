@@ -104,15 +104,28 @@ export const constantRouterMap = [
     ]
   },
   {
-    path: '/documentation',
+    path: '/tree',
     component: Layout,
-    redirect: '/documentation/index',
+    redirect: '/tree/index',
     children: [
       {
         path: 'index',
-        component: () => import('@/views/documentation/index'),
-        name: 'Documentation',
-        meta: { title: 'tree', icon: 'documentation', affix: true }
+        component: () => import('@/views/tree/index'),
+        name: 'tree',
+        meta: { title: 'tree', icon: 'documentation', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/device/:id',
+    component: Layout,
+    redirect: '/device/index',
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/device/index'),
+        name: 'Device',
+        meta: { title: 'device', icon: 'guide', noCache: true }
       }
     ]
   },

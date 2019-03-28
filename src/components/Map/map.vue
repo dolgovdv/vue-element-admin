@@ -14,10 +14,23 @@
       <l-tile-layer :url="url"/>
       <v-marker-cluster>
         <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.coordinates" :icon="changeIcons(item.agent)">
-          <l-popup :content="item.title" />
+
+          <l-popup>
+            {{ item.title }}
+            <button type="button">
+              <router-link :to="'/device/' + item.title">
+                Подробнее
+              </router-link>
+            </button>
+          </l-popup>
         </l-marker>
       </v-marker-cluster>
     </l-map>
+    <button type="button">
+      <router-link :to="'/device/'">
+        Подробнее
+      </router-link>
+    </button>
   </div>
 </template>
 
