@@ -3,6 +3,12 @@
     <user-map v-if="markers" :markers="markers"/>
     <div v-else>
       <h1>Данные загружаются</h1>
+
+      <button type="button">
+        <router-link :to="'/device/' + 3">
+          Подробнее
+        </router-link>
+      </button>
     </div>
     <hr>
     <div/>
@@ -31,7 +37,7 @@ export default {
   },
   methods: {
     getObjectData: function(query) {
-      query = query || 'inventorydb.f_get_object_nodejs()'
+      query = query || 'inventorydb.f_get_list_object_nodejs()'
       service({
         method: 'post',
         url: '/select',
