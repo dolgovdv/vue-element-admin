@@ -1,9 +1,6 @@
 <template>
 
   <div>
-    <h1>
-      Название устройства - {{ id }}
-    </h1>
     <device-form v-if="DataObject" :device-data="DataObject"/>
   </div>
 
