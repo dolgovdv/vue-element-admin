@@ -1,5 +1,6 @@
 <template>
   <el-scrollbar wrap-class="scrollbar-wrapper">
+    <img src="src/icons/png/logo.png" alt="logo" class="logo">
     <el-menu
       :default-active="$route.path"
       :collapse="isCollapse"
@@ -34,3 +35,10 @@ export default {
   }
 }
 </script>
+
+<style>
+  .logo{
+    width: 180px;
+  }
+</style>
+
