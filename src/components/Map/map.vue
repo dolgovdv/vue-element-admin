@@ -12,7 +12,7 @@
       @update:bounds="boundsUpdated"
     >
       <l-tile-layer :url="url"/>
-      <v-marker-cluster>
+      <v-marker-cluster ref="clusterRef">
         <l-marker v-for="item in markers" :key="item.id" :lat-lng="item.coordinates" :icon="changeIcons(item.agent)">
           <l-popup>
             {{ item.title }}
@@ -74,13 +74,8 @@ export default {
       })
     }
   },
-  sockets: {
-    connect: function() {
-      console.log('socket connected')
-    },
-    customEmit: function(data) {
-      console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
-    }
+  mounted() {
+    this.refreshClaster()
   },
   methods: {
     zoomUpdated(zoom) {
@@ -95,6 +90,9 @@ export default {
     changeIcons(agent) {
       // console.log('agent', agent)
       return agent === null ? agent : this.icon
+    },
+    refreshClaster() {
+      this.$refs.clusterRef.mapObject.refreshClusters() // I don't know how to use it
     }
   }
 }
