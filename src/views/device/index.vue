@@ -23,21 +23,24 @@ export default {
   },
   computed: {
     id() {
-      return this.$route.params.id
+      return this.$route.params.id || 1
+    },
+    query() {
+      return 'inventorydb.f_get_passport_object_nodejs(' + this.id + ')'
     }
   },
   mounted: function() {
     this.getObjectData()
   },
   methods: {
-    getObjectData: function(query) {
-      query = query || 'inventorydb.f_get_passport_object_nodejs(' + this.id + ')'
+    getObjectData: function(id) {
+      id = id || 1
       service({
         method: 'post',
         url: '/select',
         data: {
           typeObject: 'object',
-          nameObject: query
+          nameObject: this.query
           // nameObject: 'public.test'
         }
       })

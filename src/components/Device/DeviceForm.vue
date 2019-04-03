@@ -31,6 +31,144 @@
       </tbody>
     </table>
 
+    <h2>Состояние конвертора</h2>
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            <h3>Текущий режим</h3>
+          </td>
+          <td>
+            <input :value="checkData(LocalObject.watt)" type="text" disabled="disabled">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h3>Выходная мощность(План), Вт</h3>
+          </td>
+          <td>
+            <input :value="checkData(LocalObject.watt)" type="text" disabled="disabled">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h3>Выходная мощность(Факт), Вт</h3>
+          </td>
+          <td>
+            <input :value="checkData(LocalObject.watt)" type="text" disabled="disabled">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h3>Выходная мощность, Вт</h3>
+          </td>
+          <td>
+            <input :value="checkData(LocalObject.watt)" type="text" disabled="disabled">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Состояние конвертора</h2>
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            <h3>Режим комперсации</h3>
+          </td>
+          <td>
+            <input :value="checkData(LocalObject.watt)" type="text" disabled="disabled">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h3>Напряжение на батарее, В</h3>
+          </td>
+          <td>
+            <input :value="checkData(LocalObject.watt)" type="text" disabled="disabled">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h3>Напряжение нагрузки, В</h3>
+          </td>
+          <td>
+            <input :value="checkData(LocalObject.watt)" type="text" disabled="disabled">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h3>Ток нагрузки, А</h3>
+          </td>
+          <td>
+            <input :value="checkData(LocalObject.watt)" type="text" disabled="disabled">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h3>Мощность, Вт</h3>
+          </td>
+          <td>
+            <input :value="checkData(LocalObject.watt)" type="text" disabled="disabled">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h3>Температура, С</h3>
+          </td>
+          <td>
+            <input :value="checkData(LocalObject.watt)" type="text" disabled="disabled">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h3>Питание +5, V</h3>
+          </td>
+          <td>
+            <input :value="checkData(LocalObject.watt)" type="text" disabled="disabled">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Состояние батареи</h2>
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            <h3>Напряжение, В</h3>
+          </td>
+          <td>
+            <input :value="checkData(LocalObject.watt)" type="text" disabled="disabled">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h3>Ток, А</h3>
+          </td>
+          <td>
+            <input :value="checkData(LocalObject.watt)" type="text" disabled="disabled">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h3>Температура, С</h3>
+          </td>
+          <td>
+            <input :value="checkData(LocalObject.watt)" type="text" disabled="disabled">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h3>Заряд, %</h3>
+          </td>
+          <td>
+            <input :value="checkData(LocalObject.watt)" type="text" disabled="disabled">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
   </div>
 </template>
 
@@ -56,6 +194,9 @@ export default {
   methods: {
     installAgent(agent) {
       return agent || 'Агент не установлен'
+    },
+    checkData(data) {
+      return data || 'Нет данных'
     }
   }
 }

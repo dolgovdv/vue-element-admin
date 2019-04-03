@@ -6,7 +6,7 @@
     <l-map
       :zoom="zoom"
       :center="center"
-      style="height: 600px; width: 800px"
+      style="height: 850px; width: 1900px"
       @update:zoom="zoomUpdated"
       @update:center="centerUpdated"
       @update:bounds="boundsUpdated"

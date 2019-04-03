@@ -32,7 +32,7 @@
         <el-dropdown-menu slot="dropdown">
           <router-link to="/">
             <el-dropdown-item>
-              {{ $t('navbar.dashboard') }}
+              {{ $t('Main') }}
             </el-dropdown-item>
           </router-link>
           <el-dropdown-item divided>
