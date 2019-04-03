@@ -73,7 +73,7 @@ export const constantRouterMap = [
         path: 'main',
         component: () => import('@/views/main/index'),
         name: 'Main',
-        meta: { title: 'main', icon: 'dashboard', noCache: true, affix: true }
+        meta: { title: 'Main', icon: 'dashboard', noCache: true, affix: true }
       }
     ]
   },
@@ -99,7 +99,7 @@ export const constantRouterMap = [
         path: 'index',
         component: () => import('@/views/map/index'),
         name: 'Map',
-        meta: { title: 'map', icon: 'documentation', affix: true }
+        meta: { title: 'Map', icon: 'documentation', affix: true }
       }
     ]
   },
@@ -111,8 +111,8 @@ export const constantRouterMap = [
       {
         path: 'index',
         component: () => import('@/views/tree/index'),
-        name: 'tree',
-        meta: { title: 'tree', icon: 'documentation', noCache: true }
+        name: 'Tree',
+        meta: { title: 'Tree', icon: 'documentation', noCache: true }
       }
     ]
   },
