@@ -58,7 +58,9 @@ export default {
     },
     passToPassport: function() {
       // console.log('passToPassport =', this.item)
-      this.$router.push('/device/' + this.item.id)
+      if (!this.isFolder) {
+        this.$router.push('/device/' + this.item.id)
+      }
     }
   }
 }
