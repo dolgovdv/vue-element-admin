@@ -1,7 +1,8 @@
 <template>
 
   <div>
-    <device-form v-if="DataObject" :device-data="DataObject"/>
+    <div v-if="!DataObject">Данные загружаются</div>
+    <device-form v-else :device-data="DataObject"/>
   </div>
 
 </template>
@@ -30,25 +31,25 @@ export default {
     }
   },
   mounted: function() {
-    this.getObjectData()
+    this.getObjectData(this.query)
   },
   methods: {
-    getObjectData: function(id) {
-      id = id || 1
+    getObjectData: function(query) {
+      console.log('query', query)
       service({
         method: 'post',
         url: '/select',
         data: {
           typeObject: 'object',
-          nameObject: this.query
+          nameObject: query
           // nameObject: 'public.test'
         }
       })
         .then(res => {
           console.log('res', res.data[0])
           // this.convertInputArray(res.data[0])
-          this.DataObject = res.data[0]
-          console.log('this.DataObject = ', this.DataObject)
+          this.DataObject = Object.assign({}, res.data[0])
+          // console.log('this.DataObject = ', this.DataObject)
           return res.data[0]
         })
         .catch(err => {

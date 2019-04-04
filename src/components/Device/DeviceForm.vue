@@ -9,7 +9,7 @@
             <h3>Место расположения</h3>
           </td>
           <td>
-            <input :value="LocalObject.address" type="text" disabled="disabled">
+            <input :value="checkData(LocalObject.address)" type="text" disabled="disabled">
           </td>
         </tr>
         <tr>
@@ -17,7 +17,7 @@
             <h3>Серийный номер</h3>
           </td>
           <td>
-            <input :value="LocalObject.serialnumber" type="text" disabled="disabled">
+            <input :value="checkData(LocalObject.serialnumber)" type="text" disabled="disabled">
           </td>
         </tr>
         <tr>
@@ -74,7 +74,7 @@
       <tbody>
         <tr>
           <td>
-            <h3>Режим комперсации</h3>
+            <h3>Режим компенсации</h3>
           </td>
           <td>
             <input :value="checkData(LocalObject.watt)" type="text" disabled="disabled">
@@ -177,7 +177,7 @@ export default {
   name: 'DeviceForm',
   props: {
     DeviceData: {
-      type: Array,
+      type: [Array, Object],
       required: true
     }
   },
