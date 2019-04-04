@@ -32,7 +32,7 @@
         </tbody>
       </table>
 
-      <div v-if="checkDataObject">
+      <div v-if="LocalObject.agent">
         <h2>Состояние конвертора</h2>
         <table>
           <tbody>
@@ -41,7 +41,7 @@
                 <h3>Текущий режим</h3>
               </td>
               <td>
-                <input :value="modeConvert(DataLocalObject[5].y)" type="text" disabled="disabled">
+                <input :value="modeConvert(DataLocalObject.mode)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -49,7 +49,7 @@
                 <h3>Выходная мощность(План), Вт</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[6].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject.p_fset)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -57,7 +57,7 @@
                 <h3>Выходная мощность(Факт), Вт</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[6].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject.p_fset)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -65,7 +65,7 @@
                 <h3>Выходная мощность, Вт</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[4].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject.p_result)" type="text" disabled="disabled">
               </td>
             </tr>
           </tbody>
@@ -87,7 +87,7 @@
                 <h3>Напряжение на батарее, В</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[11].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject.u_batt)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -95,7 +95,7 @@
                 <h3>Напряжение нагрузки, В</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[10].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject.u_load)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -103,7 +103,7 @@
                 <h3>Ток нагрузки, А</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[3].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject.i_total)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -111,7 +111,7 @@
                 <h3>Мощность, Вт</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[4].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject.p_result)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -141,7 +141,7 @@
                 <h3>Напряжение, В</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[9].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject.u_batt_1)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -149,7 +149,7 @@
                 <h3>Ток, А</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[8].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject.i_batt_1)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -157,7 +157,7 @@
                 <h3>Мощность, Вт</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[0].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject.p_batt_1)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -199,15 +199,15 @@ export default {
   data() {
     return {
       LocalObject: {},
-      DataLocalObject: []
+      DataLocalObject: {}
     }
   },
   computed: {
     query() {
       return 'statistic.f_view_statistic_by_obj_nodejs(' + this.LocalObject.id + ')'
     },
-    checkDataObject() {
-      return this.DataLocalObject.length === 0 ? 0 : 1
+    pfset() {
+      return this.DataLocalObject.p_fset
     }
   },
   mounted: function() {
@@ -238,15 +238,20 @@ export default {
         }
       })
         .then(res => {
-          // console.log('res DataLocalObject', res)
-          // this.convertInputArray(res.data[0])
-          this.DataLocalObject = res.data[0] // присваивание
-          // console.log('this.DataLocalObject = ', this.DataLocalObject)
+          // console.log('res', res.data[0])
+          this.changeInputData(res.data[0])
           return res.data[0]
         })
         .catch(err => {
           console.log('err = ', err)
         })
+    },
+    changeInputData(data) {
+      // console.log('changeInputData =', data)
+      data.map((item, i, arr) => {
+        this.$set(this.DataLocalObject, item.series, item.y)
+        // console.log('changeInputData DataLocalObject =', this.DataLocalObject)
+      })
     },
     modeMode(data) {
       return data || 'Минутный'
@@ -264,12 +269,12 @@ export default {
       timeDelayUI = timeDelayUI || 60000
       const eventTime = Date.now()
       this.getObjectData(this.query)
+      // console.log('requestDBTimeout')
 
       setTimeout(() => {
         const nw = Date.now()
         const diff = nw - eventTime - timeDelayUI
         this.requestDBTimeout(diff, this.timeDelayUI)
-        // console.log('requestDBTimeout', diff, timeDelayUI, diff)
       }, timeDelayUI - diff)
     }
   }
