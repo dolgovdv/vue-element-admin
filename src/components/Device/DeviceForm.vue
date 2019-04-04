@@ -32,10 +32,7 @@
         </tbody>
       </table>
 
-      <div v-if="!checkDataObject">
-        Нет данных
-      </div>
-      <div v-else>
+      <div v-if="checkDataObject">
         <h2>Состояние конвертора</h2>
         <table>
           <tbody>
@@ -44,7 +41,7 @@
                 <h3>Текущий режим</h3>
               </td>
               <td>
-                <input :value="modeConvert(DataLocalObject[3].y)" type="text" disabled="disabled">
+                <input :value="modeMode()" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -226,7 +223,8 @@ export default {
       return agent || 'Агент не установлен'
     },
     checkData(data) {
-      return data || 'Нет данных'
+      // console.log('checkData(data)', data)
+      return data === undefined ? 'Нет данных' : data
     },
     getObjectData: function(query) {
       // console.log('query', query)
@@ -249,6 +247,9 @@ export default {
         .catch(err => {
           console.log('err = ', err)
         })
+    },
+    modeMode(data) {
+      return data || 'Минутный'
     },
     modeConvert(data) {
       // console.log('modeConvert', data)
