@@ -6,7 +6,7 @@
     <l-map
       :zoom="zoom"
       :center="center"
-      style="height: 850px; width: 1900px"
+      style="height: 850px"
       @update:zoom="zoomUpdated"
       @update:center="centerUpdated"
       @update:bounds="boundsUpdated"
@@ -92,7 +92,7 @@ export default {
       return agent === null ? agent : this.icon
     },
     refreshClaster() {
-      this.$refs.clusterRef.mapObject.refreshClusters() // I don't know how to use it
+      // this.$refs.clusterRef.mapObject.refreshClusters() // I don't know how to use it
     }
   }
 }

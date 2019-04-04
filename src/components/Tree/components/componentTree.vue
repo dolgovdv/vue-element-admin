@@ -5,7 +5,7 @@
       <div
         :class="{ bold: isFolder, elementTree: !isFolder }"
         @click="toggle"
-        @dblclick="passToPassport('/device/' + item.id)"
+        @dblclick="passToPassport"
       >
         {{ item.name }}
         <span v-if="isFolder">[{{ isOpen ? '-' : '+' }}]</span>
@@ -56,9 +56,9 @@ export default {
         this.isOpen = true
       }
     },
-    passToPassport: function(path) {
-      console.log('passToPassport =', this.item)
-      this.$router.push('path')
+    passToPassport: function() {
+      // console.log('passToPassport =', this.item)
+      this.$router.push('/device/' + this.item.id)
     }
   }
 }
