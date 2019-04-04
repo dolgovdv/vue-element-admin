@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     getObjectData: function(query) {
-      console.log('query', query)
+      // console.log('query', query)
       service({
         method: 'post',
         url: '/select',
@@ -46,7 +46,7 @@ export default {
         }
       })
         .then(res => {
-          console.log('res', res.data[0])
+          // console.log('res', res.data[0])
           // this.convertInputArray(res.data[0])
           this.DataObject = Object.assign({}, res.data[0])
           // console.log('this.DataObject = ', this.DataObject)

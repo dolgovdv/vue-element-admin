@@ -42,7 +42,7 @@ export default {
         }
       })
         .then(res => {
-          console.log('res', res.data[0])
+          // console.log('res', res.data[0])
           this.convertInputArray(res.data[0])
           return res.data[0]
         })
