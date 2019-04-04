@@ -41,7 +41,7 @@
                 <h3>Текущий режим</h3>
               </td>
               <td>
-                <input :value="modeMode()" type="text" disabled="disabled">
+                <input :value="modeConvert(DataLocalObject[5].y)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -49,7 +49,7 @@
                 <h3>Выходная мощность(План), Вт</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[4].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject[6].y)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -57,7 +57,7 @@
                 <h3>Выходная мощность(Факт), Вт</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[4].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject[6].y)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -65,7 +65,7 @@
                 <h3>Выходная мощность, Вт</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[2].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject[4].y)" type="text" disabled="disabled">
               </td>
             </tr>
           </tbody>
@@ -79,7 +79,7 @@
                 <h3>Режим компенсации</h3>
               </td>
               <td>
-                <input :value="checkData(LocalObject.watt)" type="text" disabled="disabled">
+                <input :value="modeMode()" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -87,7 +87,7 @@
                 <h3>Напряжение на батарее, В</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[9].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject[11].y)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -95,7 +95,7 @@
                 <h3>Напряжение нагрузки, В</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[8].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject[10].y)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -103,7 +103,7 @@
                 <h3>Ток нагрузки, А</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[1].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject[3].y)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -111,7 +111,7 @@
                 <h3>Мощность, Вт</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[2].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject[4].y)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -141,7 +141,7 @@
                 <h3>Напряжение, В</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[7].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject[9].y)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
@@ -149,7 +149,7 @@
                 <h3>Ток, А</h3>
               </td>
               <td>
-                <input :value="checkData(DataLocalObject[6].y)" type="text" disabled="disabled">
+                <input :value="checkData(DataLocalObject[8].y)" type="text" disabled="disabled">
               </td>
             </tr>
             <tr>
