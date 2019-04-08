@@ -1,16 +1,22 @@
 <template>
   <div>
+    <!--
     <user-map v-if="markers" :markers="markers"/>
+    -->
+    <user-map1 v-if="markers" :marker="markers"/>
     <div v-else>
       <h1>Данные загружаются</h1>
     </div>
+
     <hr>
+
     <div/>
   </div>
 </template>
 
 <script>
 import UserMap from '@/components/Map/map.vue'
+import UserMap1 from '@/components/Map/map1.vue'
 import service from '@/utils/request.js'
 
 import io from '@/components/Socket/socket.vue'
@@ -19,6 +25,7 @@ export default {
   name: 'UserMap',
   components: {
     'user-map': UserMap,
+    'user-map1': UserMap1,
     'io': io
   },
   data: function() {
@@ -56,31 +63,11 @@ export default {
       //   this.renameProp(object, 'objname_rus', 'title')
       // })
       const arr = arrInput.map((item, i, arr) => {
-        return { id: item.id, coordinates: [item.latit, item.longit], title: item.objname_rus, agent: item.agent }
+        return { id: item.id, coordinates: [item.latit, item.longit], title: item.objname_rus, agent: item.agent, alarm: null }
       })
+      console.log('arr index map =', arr)
       this.markers = arr
       return arrInput
-    },
-    // not use
-    combinePropsToNewProp: function(obj, propArr, newProp) {
-      obj[newProp] = []
-      for (const prop of propArr) {
-        this.pushAndDelete(obj, prop, newProp)
-      }
-    },
-    // not use
-    pushAndDelete: function(obj, oldProp, newProp) {
-      if (obj.hasOwnProperty(oldProp)) {
-        obj[newProp].push(obj[oldProp])
-        delete obj[oldProp]
-      }
-    },
-    // not use
-    renameProp: function(obj, oldProp, newProp) {
-      if (obj.hasOwnProperty(oldProp)) {
-        obj[newProp] = obj[oldProp]
-        delete obj[oldProp]
-      }
     }
   }
 }
