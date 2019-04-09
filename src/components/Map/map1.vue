@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div id="map" />
+    <div class="parentMap">
+      <div id="map" class="left_block" />
+      <side-bar v-if="sidebarShow" class="right_block" />
+    </div>
   </div>
 </template>
 
@@ -9,6 +12,7 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet.markercluster'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+import SideBar from '@/components/Map/components/sidebar.vue'
 
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
@@ -19,6 +23,9 @@ L.Icon.Default.mergeOptions({
 
 export default {
   name: 'MapLeaflet',
+  components: {
+    'side-bar': SideBar
+  },
   props: {
     marker: {
       type: Array,
@@ -36,7 +43,8 @@ export default {
         iconUrl: '/src/icons/svg/carbattery.svg',
         iconSize: [50, 65],
         iconAnchor: [16, 37]
-      })
+      }),
+      sidebarShow: false
     }
   },
   watch: {
@@ -64,8 +72,13 @@ export default {
           '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;'
       })
       this.tileLayer.addTo(this.map)
-
+      // добавление маркеров
       this.addMarker(this.marker)
+
+      // добавление боковой панели
+      this.map.on('click', () => {
+        this.sidebarShow = false
+      })
     },
     addMarker(arr) {
       this.markers = L.markerClusterGroup({
@@ -80,7 +93,7 @@ export default {
           const markers = cluster.getAllChildMarkers()
 
           for (var i = 0; i < markers.length; i++) {
-            console.log('markers[i].alarm', markers[i].alarm)
+            // console.log('markers[i].alarm', markers[i].alarm)
             if (markers[i].alarm !== null && markers[i].alarm !== undefined) {
               ClasterClass = 'myclusterAlarm'
             }
@@ -113,7 +126,7 @@ export default {
     },
     // наполнение маркера
     fillingMarker(dataMarker) {
-      console.log('dataMarker ', dataMarker)
+      // console.log('dataMarker ', dataMarker)
       let marker = null
       if (dataMarker.agent) {
         marker = L.marker(dataMarker.coordinates, { icon: this.iconAgent })
@@ -121,7 +134,14 @@ export default {
         marker = L.marker(dataMarker.coordinates)
       }
       marker.bindPopup('<p>' + dataMarker.title + '</p><button type="button"> <a href="#/device/' + dataMarker.id + '" class="">Подробнее</a>').openPopup()
+      marker.on('click', () => {
+        this.sidebarToggle()
+      })
       return marker
+    },
+    sidebarToggle(data) {
+      console.log('sidebar.show()')
+      this.sidebarShow = true
     }
   }
 }
@@ -154,4 +174,13 @@ export default {
 .marker-cluster span {
 	line-height: 30px;
 	}
+.parentMap {
+  display: flex;
+}
+div.left_block {
+  width: 100%;
+}
+div.right_block {
+  min-width: 400px;
+}
 </style>

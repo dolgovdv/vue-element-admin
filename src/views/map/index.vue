@@ -65,7 +65,7 @@ export default {
       const arr = arrInput.map((item, i, arr) => {
         return { id: item.id, coordinates: [item.latit, item.longit], title: item.objname_rus, agent: item.agent, alarm: null }
       })
-      console.log('arr index map =', arr)
+      // console.log('arr index map =', arr)
       this.markers = arr
       return arrInput
     }
