@@ -246,6 +246,7 @@ export default {
           console.log('err = ', err)
         })
     },
+    // добавление примеси для реактивности
     changeInputData(data) {
       // console.log('changeInputData =', data)
       data.map((item, i, arr) => {

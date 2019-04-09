@@ -2,7 +2,7 @@
   <div>
     <div class="parentMap">
       <div id="map" class="left_block" />
-      <side-bar v-if="sidebarShow" class="right_block" />
+      <side-bar v-if="sidebarShow" :id-data="objectId" class="right_block" />
     </div>
   </div>
 </template>
@@ -44,7 +44,8 @@ export default {
         iconSize: [50, 65],
         iconAnchor: [16, 37]
       }),
-      sidebarShow: false
+      sidebarShow: false,
+      objectId: null
     }
   },
   watch: {
@@ -135,12 +136,13 @@ export default {
       }
       marker.bindPopup('<p>' + dataMarker.title + '</p><button type="button"> <a href="#/device/' + dataMarker.id + '" class="">Подробнее</a>').openPopup()
       marker.on('click', () => {
-        this.sidebarToggle()
+        this.sidebarToggle(dataMarker.id)
       })
       return marker
     },
     sidebarToggle(data) {
       console.log('sidebar.show()')
+      this.objectId = data
       this.sidebarShow = true
     }
   }
