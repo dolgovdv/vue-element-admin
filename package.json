@@ -48,6 +48,7 @@
     "jsonlint": "1.6.3",
     "jszip": "3.1.5",
     "leaflet": "1.2.0",
+    "leaflet-search": "2.9.8",
     "liquor-tree": "^0.2.53",
     "mockjs": "1.0.1-beta3",
     "normalize.css": "7.0.0",

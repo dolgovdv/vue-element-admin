@@ -13,6 +13,8 @@ import 'leaflet/dist/leaflet.css'
 import 'leaflet.markercluster'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import SideBar from '@/components/Map/components/sidebar.vue'
+import 'leaflet-search'
+import 'leaflet-search/src/leaflet-search.css'
 
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
@@ -38,14 +40,15 @@ export default {
     return {
       map: null,
       tileLayer: null,
-      markers: null,
+      markersLayer: null,
       iconAgent: L.icon({
         iconUrl: '/src/icons/svg/carbattery.svg',
         iconSize: [50, 65],
         iconAnchor: [16, 37]
       }),
       sidebarShow: false,
-      objectId: null
+      objectId: null,
+      searchLayer: null
     }
   },
   watch: {
@@ -80,9 +83,12 @@ export default {
       this.map.on('click', () => {
         this.sidebarShow = false
       })
+
+      // добавление поиска
+      this.createSearch(this.marker)
     },
     addMarker(arr) {
-      this.markers = L.markerClusterGroup({
+      this.markersLayer = L.markerClusterGroup({
         // отображение полилинии границы кластера
         showCoverageOnHover: true,
         // измененеие иконки маркера кластера
@@ -91,11 +97,11 @@ export default {
           // leaflet-marker-icon marker-cluster marker-cluster-small leaflet-zoom-animated leaflet-interactive
           // console.log(cluster.getAllChildMarkers())
           // получение объектов кластера
-          const markers = cluster.getAllChildMarkers()
+          const markersLayer = cluster.getAllChildMarkers()
 
-          for (var i = 0; i < markers.length; i++) {
-            // console.log('markers[i].alarm', markers[i].alarm)
-            if (markers[i].alarm !== null && markers[i].alarm !== undefined) {
+          for (var i = 0; i < markersLayer.length; i++) {
+            // console.log('markersLayer[i].alarm', markersLayer[i].alarm)
+            if (markersLayer[i].alarm !== null && markersLayer[i].alarm !== undefined) {
               ClasterClass = 'myclusterAlarm'
             }
           }
@@ -114,25 +120,26 @@ export default {
         markerLayerClaster.alarm = element.alarm
         // L.marker(element.coords).addTo(this.map)
         // marker claster
-        this.markers.addLayer(markerLayerClaster)
+        this.markersLayer.addLayer(markerLayerClaster)
       })
       // добавление маркеров на слой
-      this.map.addLayer(this.markers)
+      this.map.addLayer(this.markersLayer)
 
       this.refreshMarkers()
     },
     refreshMarkers() {
       console.log('refreshMarkers')
-      this.markers.refreshClusters()
+      this.markersLayer.refreshClusters()
     },
     // наполнение маркера
     fillingMarker(dataMarker) {
       // console.log('dataMarker ', dataMarker)
       let marker = null
       if (dataMarker.agent) {
-        marker = L.marker(dataMarker.coordinates, { icon: this.iconAgent })
+        marker = L.marker(dataMarker.coordinates, { title: dataMarker.title }, { icon: this.iconAgent })
       } else {
-        marker = L.marker(dataMarker.coordinates)
+        marker = L.marker(dataMarker.coordinates, { title: dataMarker.title })
+        // console.log('title', dataMarker.title)
       }
       marker.bindPopup('<p>' + dataMarker.title + '</p><button type="button"> <a href="#/device/' + dataMarker.id + '" class="">Подробнее</a>').openPopup()
       marker.on('click', () => {
@@ -140,10 +147,23 @@ export default {
       })
       return marker
     },
+    // управление боковой панелью
     sidebarToggle(data) {
       console.log('sidebar.show()')
       this.objectId = data
       this.sidebarShow = true
+    },
+    // создание слоя для поиска
+    createSearch(data) {
+      this.searchLayer = new L.Control.Search({
+        position: 'topright',
+        layer: this.markersLayer,
+        initial: false,
+        zoom: 18,
+        marker: false
+      })
+
+      this.map.addControl(this.searchLayer)
     }
   }
 }
