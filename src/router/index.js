@@ -128,6 +128,19 @@ export const constantRouterMap = [
         // meta: { title: 'device', icon: 'guide', noCache: true }
       }
     ]
+  },
+  {
+    path: '/passport/:id',
+    component: Layout,
+    redirect: '/passport/passport.vue',
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/passport/passport.vue'),
+        name: 'Passport'
+        // meta: { title: 'device', icon: 'guide', noCache: true }
+      }
+    ]
   }
 ]
 

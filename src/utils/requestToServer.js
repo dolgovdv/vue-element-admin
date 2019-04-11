@@ -20,7 +20,7 @@ function getObjectData(query) {
       }
     })
       .then(res => {
-        console.log('res', res.data[0])
+        // console.log('res', res.data[0])
         // console.log('this.DataObject = ', this.DataObject)
         return resolve(res.data[0])
       })

@@ -1,47 +1,36 @@
 <template>
   <div>
-    <div v-if="DataObject">
-      <h1>{{ DataObject.title_rus }}</h1>
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <h3>Место расположения</h3>
-            </td>
-            <td>
-              <input :value="checkData(DataObject.address)" type="text" disabled="disabled">
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <h3>Серийный номер</h3>
-            </td>
-            <td>
-              <input :value="checkData(DataObject.serialnumber)" type="text" disabled="disabled">
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <h3>Установка оборудования</h3>
-            </td>
-            <td>
-              <input :value="installAgent(DataObject.agent)" type="text" disabled="disabled">
-            </td>
-          </tr>
-        </tbody>
-      </table>
 
+    <div >
+      <button
+        v-for="tab in TabsComponents"
+        :key="tab.name"
+        :class="['tab-button', { active: currentTab.name === tab.name }]"
+        @click="currentTab = tab"
+      >{{ tab.title }}</button>
+
+      <component
+        :is="currentTab.name"
+        :id-data="idData"
+        class="tab"
+      />
     </div>
+
   </div>
 </template>
 
 <script>
 
 // import service from '@/utils/request.js'
-import getData from '@/utils/requestToServer.js'
+import InfoSideBar from '@/components/Map/components/infoSideBar.vue'
+import PassportSideBar from '@/components/Map/components/passportSideBar.vue'
 
 export default {
   name: 'SideBarMap',
+  components: {
+    'info-side-bar': InfoSideBar,
+    'passport-side-bar': PassportSideBar
+  },
   props: {
     idData: {
       required: true,
@@ -50,46 +39,41 @@ export default {
   },
   data() {
     return {
-      DataObject: null
+      TabsComponents: [{ name: 'info-side-bar', title: 'Мониторинг' }, { name: 'passport-side-bar', title: 'Паспорт' }],
+      currentTab: {}
     }
   },
-  computed: {
-    query() {
-      return 'inventorydb.f_get_passport_object_nodejs(' + this.idData + ')'
-    }
-  },
-  watch: {
-    idData() {
-      console.log('watch', this.idData)
-      this.getObjectData(this.query)
-    }
-  },
-  mounted: function() {
-    this.getObjectData(this.query)
-  },
-  methods: {
-    getObjectData: function(query) {
-      console.log('query', query)
-      getData(query)
-        .then(res => {
-          // for (const key in res[0]) {
-          //   this.$set(this.DataObject, key, res[0].key)
-          // }
-          // this.$set(this.DataObject, item.series, item.y)
-          this.DataObject = res[0]
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
-    installAgent(agent) {
-      return agent || 'Агент не установлен'
-    },
-    checkData(data) {
-      // console.log('checkData(data)', data)
-      return data === undefined ? 'Нет данных' : data
-    }
+  // метоб find
+  // computed: {
+  //   currentTab() {
+  //     return this.TabsComponents[0].find(t => t.active === true)
+  //   }
+  // }
+  created() {
+    this.currentTab = this.TabsComponents[0]
   }
 }
 </script>
 
+<style>
+.tab-button {
+  padding: 6px 10px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  background: #f0f0f0;
+  margin-bottom: -1px;
+  margin-right: -1px;
+}
+.tab-button:hover {
+  background: #e0e0e0;
+}
+.tab-button.active {
+  background: #c0e9bf;
+}
+.tab {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+</style>

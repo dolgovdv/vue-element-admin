@@ -76,7 +76,9 @@ export default {
           '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;'
       })
       this.tileLayer.addTo(this.map)
+
       // добавление маркеров
+      // console.log('marker', this.marker)
       this.addMarker(this.marker)
 
       // добавление боковой панели
@@ -87,6 +89,7 @@ export default {
       // добавление поиска
       this.createSearch(this.marker)
     },
+    // наполнение кластера маркеров
     addMarker(arr) {
       this.markersLayer = L.markerClusterGroup({
         // отображение полилинии границы кластера
@@ -118,7 +121,6 @@ export default {
         const fillMarker = this.fillingMarker(element)
         const markerLayerClaster = fillMarker // L.marker(element.coords)
         markerLayerClaster.alarm = element.alarm
-        // L.marker(element.coords).addTo(this.map)
         // marker claster
         this.markersLayer.addLayer(markerLayerClaster)
       })
@@ -141,7 +143,10 @@ export default {
         marker = L.marker(dataMarker.coordinates, { title: dataMarker.title })
         // console.log('title', dataMarker.title)
       }
-      marker.bindPopup('<p>' + dataMarker.title + '</p><button type="button"> <a href="#/device/' + dataMarker.id + '" class="">Подробнее</a>').openPopup()
+      marker.title = dataMarker.title
+      // добавление кнопки перехода на панель
+      // <button type="button"> <a href="#/device/' + dataMarker.id + '" class="">Подробнее</a></button>
+      marker.bindPopup('<p>' + dataMarker.title + '</p>').openPopup()
       marker.on('click', () => {
         this.sidebarToggle(dataMarker.id)
       })
@@ -149,20 +154,19 @@ export default {
     },
     // управление боковой панелью
     sidebarToggle(data) {
-      console.log('sidebar.show()')
+      // console.log('sidebar.show()')
       this.objectId = data
       this.sidebarShow = true
     },
     // создание слоя для поиска
     createSearch(data) {
       this.searchLayer = new L.Control.Search({
-        position: 'topright',
+        position: 'topleft',
         layer: this.markersLayer,
         initial: false,
         zoom: 18,
         marker: false
       })
-
       this.map.addControl(this.searchLayer)
     }
   }
@@ -204,5 +208,21 @@ div.left_block {
 }
 div.right_block {
   min-width: 400px;
+}
+.leaflet-control-search .search-tooltip {
+	position:absolute;
+	top:100%;
+	left:0;
+	float:left;
+	list-style: none;
+	padding-left: 0;
+	min-width:220px;
+	max-height:350px;
+	box-shadow: 1px 1px 6px rgba(0,0,0,0.4);
+	background-color: rgba(0, 0, 0, 0.25);
+	z-index:1010;
+	overflow-y:auto;
+	overflow-x:hidden;
+	cursor: pointer;
 }
 </style>
