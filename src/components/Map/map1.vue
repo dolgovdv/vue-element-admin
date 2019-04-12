@@ -161,7 +161,7 @@ export default {
     // создание слоя для поиска
     createSearch(data) {
       this.searchLayer = new L.Control.Search({
-        position: 'topright',
+        position: 'topleft',
         layer: this.markersLayer,
         initial: false,
         zoom: 18,
