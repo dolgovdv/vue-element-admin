@@ -40,7 +40,14 @@ export default {
     return {
       map: null,
       tileLayer: null,
+      markerLayer: null,
+      markersArray: null,
       markersLayer: null,
+      iconDefault: L.icon({
+        iconUrl: '/src/icons/svg/location-pointer.svg',
+        iconSize: [50, 65],
+        iconAnchor: [16, 37]
+      }),
       iconAgent: L.icon({
         iconUrl: '/src/icons/svg/carbattery.svg',
         iconSize: [50, 65],
@@ -79,18 +86,51 @@ export default {
 
       // добавление маркеров
       // console.log('marker', this.marker)
-      this.addMarker(this.marker)
+      // this.addMarker(this.marker)
+      this.createMarkerLayer(this.marker)
 
       // добавление боковой панели
       this.map.on('click', () => {
         this.sidebarShow = false
       })
-
-      // добавление поиска
-      this.createSearch(this.marker)
     },
+
+    // создание слоя маркеров
+    createMarkerLayer(data) {
+      // console.log('createMarkerLayer', data)
+      const promiseMarkerArray = this.createMarkerArray(data)
+      promiseMarkerArray
+        .then(res => {
+          this.markersArray = res
+          // console.log('this.markerLayer', this.markersArray)
+          this.markerLayer = L.layerGroup(this.markersArray)
+
+          this.addMarker()
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    // создание массива маркеров
+    createMarkerArray(data) {
+      return new Promise((res, rej) => {
+        return res(data.map(item => {
+          let icon = null
+          item.agent !== null ? icon = this.iconAgent : icon = this.iconDefault
+          const marker = L.marker(item.coordinates, { title: item.title, icon: icon })
+          marker.bindPopup('<p>' + item.title + '</p>').openPopup()
+          marker.on('click', () => {
+            this.sidebarToggle(item.id)
+          })
+          marker.alarm = item.alarm
+          marker.agent = item.agent
+          return marker
+        }))
+      })
+    },
+
     // наполнение кластера маркеров
-    addMarker(arr) {
+    addMarker() {
       this.markersLayer = L.markerClusterGroup({
         // отображение полилинии границы кластера
         showCoverageOnHover: true,
@@ -104,8 +144,14 @@ export default {
 
           for (var i = 0; i < markersLayer.length; i++) {
             // console.log('markersLayer[i].alarm', markersLayer[i].alarm)
+            // аварийный маркер
             if (markersLayer[i].alarm !== null && markersLayer[i].alarm !== undefined) {
-              ClasterClass = 'myclusterAlarm'
+              ClasterClass = 'leaflet-marker-icon marker-cluster leaflet-zoom-animated leaflet-interactive marker-cluster-small-alarm marker-cluster-small-alarm div'
+            }
+
+            // маркер с оборудованием
+            if (markersLayer[i].agent !== null && markersLayer[i].agent !== undefined) {
+              ClasterClass = 'leaflet-marker-icon leaflet-zoom-animated leaflet-interactive marker-cluster-small marker-cluster-small div'
             }
           }
           return L.divIcon({
@@ -116,41 +162,18 @@ export default {
         },
         singleMarkerMode: false
       })
-      arr.forEach(element => {
-        // формирование маркеров на слое кластера
-        const fillMarker = this.fillingMarker(element)
-        const markerLayerClaster = fillMarker // L.marker(element.coords)
-        markerLayerClaster.alarm = element.alarm
-        // marker claster
-        this.markersLayer.addLayer(markerLayerClaster)
-      })
       // добавление маркеров на слой
+      this.markersLayer.addLayer(this.markerLayer)
       this.map.addLayer(this.markersLayer)
 
-      this.refreshMarkers()
+      // добавление поиска
+      this.createSearch()
+
+      // this.refreshMarkers()
     },
     refreshMarkers() {
       console.log('refreshMarkers')
       this.markersLayer.refreshClusters()
-    },
-    // наполнение маркера
-    fillingMarker(dataMarker) {
-      // console.log('dataMarker ', dataMarker)
-      let marker = null
-      if (dataMarker.agent) {
-        marker = L.marker(dataMarker.coordinates, { title: dataMarker.title }, { icon: this.iconAgent })
-      } else {
-        marker = L.marker(dataMarker.coordinates, { title: dataMarker.title })
-        // console.log('title', dataMarker.title)
-      }
-      marker.title = dataMarker.title
-      // добавление кнопки перехода на панель
-      // <button type="button"> <a href="#/device/' + dataMarker.id + '" class="">Подробнее</a></button>
-      marker.bindPopup('<p>' + dataMarker.title + '</p>').openPopup()
-      marker.on('click', () => {
-        this.sidebarToggle(dataMarker.id)
-      })
-      return marker
     },
     // управление боковой панелью
     sidebarToggle(data) {
@@ -159,15 +182,28 @@ export default {
       this.sidebarShow = true
     },
     // создание слоя для поиска
-    createSearch(data) {
+    createSearch() {
+      const markersLayerT = new L.LayerGroup()	// layer contain searched elements
+
+      this.map.addLayer(markersLayerT)
+
       this.searchLayer = new L.Control.Search({
         position: 'topleft',
-        layer: this.markersLayer,
-        initial: false,
+        layer: markersLayerT,
+        initial: true,
         zoom: 18,
         marker: false
       })
       this.map.addControl(this.searchLayer)
+
+      for (const i in this.marker) {
+        console.log(this.marker[i].coordinates)
+        const title = this.marker[i].title	// v alue searched
+        const loc = this.marker[i].coordinates		// position found
+        const marker = L.Marker(loc, { title: title }) // se property searched
+        marker.bindPopup('title: ' + title)
+        markersLayerT.addLayer(marker)
+      }
     }
   }
 }
@@ -182,6 +218,12 @@ export default {
 }
 .marker-cluster-small div {
   background-color: rgba(71, 206, 71, 0.6);
+}
+.marker-cluster-small-alarm {
+  background-color: rgba(233, 150, 150, 0.747);
+}
+.marker-cluster-small-alarm div {
+  background-color: rgba(206, 121, 71, 0.616);
 }
 .marker-cluster {
 	background-clip: padding-box;
